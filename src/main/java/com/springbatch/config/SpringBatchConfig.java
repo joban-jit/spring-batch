@@ -2,6 +2,7 @@ package com.springbatch.config;
 
 import javax.sql.DataSource;
 
+import com.springbatch.listener.OrdersDataSkipListener;
 import com.springbatch.mapper.OrdersRecordFieldSetMapper;
 import com.springbatch.processor.OrdersProcessor;
 import org.springframework.batch.core.Job;
@@ -19,6 +20,7 @@ import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilde
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -95,11 +97,16 @@ public class SpringBatchConfig {
     public Step step2(JobRepository jobRepository,
                       PlatformTransactionManager transactionManager,
                       ItemReader<OrdersRecord> ordersDataFlatFileReader,
-                      ItemWriter<OrdersRecord> ordersDataTableItemWriter) {
+                      ItemWriter<OrdersRecord> ordersDataTableItemWriter,
+                      OrdersDataSkipListener skipListener) {
         return new StepBuilder("fileIngestion", jobRepository)
                 .<OrdersRecord, OrdersRecord>chunk(100, transactionManager)
                 .reader(ordersDataFlatFileReader)
                 .writer(ordersDataTableItemWriter)
+                .faultTolerant()
+                .skip(FlatFileParseException.class)
+                .skipLimit(10)
+                .listener(skipListener)
                 .build();
 
         //The syntax <BillingData,BillingData>chunk(...) is used to tell Spring Batch that the input and output of the step are of type BillingData, meaning that the reader will return items of type BillingData and that the writer will write items of type BillingData as well.
@@ -161,6 +168,14 @@ public class SpringBatchConfig {
                  .processor(ordersRecordItemProcessor)
                  .writer(ordersRecordFlatFileItemWriter)
                  .build();
+    }
+
+    @Bean
+    @StepScope
+    public OrdersDataSkipListener skipListener(
+            @Value("#{jobParameters['skip.file']}") String skippedFile
+    ){
+        return new OrdersDataSkipListener(skippedFile);
     }
 
 //    java -jar target/billing-job-0.0.1-SNAPSHOT.jar input.file=input/billing-2023-01.csv output.file=staging/billing-report-2023-01.csv data.year=2023 data.month=1

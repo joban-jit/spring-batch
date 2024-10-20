@@ -1,5 +1,5 @@
 id,account_key,initiated_datetime,order_status,symbol,avg_price,quantity,last_updated_datetime
-34,account_27,2024-09-29 10:26:00,pending,FB,376.5,80,2024-09-29 10:31:00
+34,account_27,2024-09-29 10:26:00,pending,FB,376.5,80,2024-09-29 10:31
 35,account_3,2024-09-29 10:02:00,pending,AMZN,3300.45,200,2024-09-29 10:07:00
 36,account_33,2024-09-29 10:32:00,pending,TSLA,275.7,90,2024-09-29 10:37:00
 37,account_8,2024-09-29 10:07:00,completed,GOOG,2900.5,30,2024-09-29 10:12:00
@@ -15,7 +15,7 @@ id,account_key,initiated_datetime,order_status,symbol,avg_price,quantity,last_up
 47,account_10,2024-09-29 10:09:00,completed,MSFT,295.75,60,2024-09-29 10:14:00
 48,account_27,2024-09-29 10:26:00,pending,FB,376.5,80,2024-09-29 10:31:00
 49,account_13,2024-09-29 10:12:00,pending,FB,375.5,140,2024-09-29 10:17:00
-50,account_25,2024-09-29 10:24:00,pending,AMZN,3301.0,130,2024-09-29 10:29:00
+50,account_25,2024-09-29 10:24:00,pending,AMZN,234-12,130,2024-09-29 10:29:00
 51,account_16,2024-09-29 10:15:00,completed,AAPL,176.0,120,2024-09-29 10:20:00
 52,account_10,2024-09-29 10:09:00,completed,MSFT,295.75,60,2024-09-29 10:14:00
 53,account_22,2024-09-29 10:21:00,completed,GOOG,2901.0,70,2024-09-29 10:26:00
