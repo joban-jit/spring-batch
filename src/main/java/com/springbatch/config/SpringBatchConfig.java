@@ -2,6 +2,7 @@ package com.springbatch.config;
 
 import javax.sql.DataSource;
 
+import com.springbatch.exception.MyCustomException;
 import com.springbatch.listener.OrdersDataSkipListener;
 import com.springbatch.mapper.OrdersRecordFieldSetMapper;
 import com.springbatch.processor.OrdersProcessor;
@@ -167,6 +168,9 @@ public class SpringBatchConfig {
                 .reader(ordersDataTableReader)
                  .processor(ordersRecordItemProcessor)
                  .writer(ordersRecordFlatFileItemWriter)
+                 .faultTolerant()
+                 .retry(MyCustomException.class)
+                 .retryLimit(100)
                  .build();
     }
 
